@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD: some_strong_password
+    network_mode: bridge
