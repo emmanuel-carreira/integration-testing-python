@@ -4,24 +4,29 @@ import psycopg2
 
 
 class Postgres:
-    def __init__(self, host:str, port:str, database:str, user:str, password:str):
-        self.host = host
-        self.port = port
-        self.database = database
-        self.user = user
-        self.password = password
-        self.connection = None
-
-    def __enter__(self):
-        self.connection = psycopg2.connect(
-            host=self.host,
-            port=self.port,
-            database=self.database,
-            user=self.user,
-            password=self.password
+    def __init__(self, host: str, port: str, database: str, user: str, password: str):
+        self._connection = psycopg2.connect(
+            host=host,
+            port=port,
+            database=database,
+            user=user,
+            password=password
         )
-        return self.connection
+        self._cursor = None
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.connection:
-            self.connection.close()
+    def __del__(self):
+        if self._cursor:
+            self._cursor.close()
+        self._connection.close()
+
+    @property
+    def cursor(self):
+        if not self._cursor:
+            self._cursor = self._connection.cursor()
+        return self._cursor
+
+    def execute_sql_command(self, command: str, params = ()):
+        self.cursor.execute(command, params)
+
+    def commit_command(self):
+        self._connection.commit()
