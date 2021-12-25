@@ -1,11 +1,8 @@
 from src.models.user import User
-from src.postgres import Postgres
+from src.dao.dao_interface import DAOInterface
 
 
-class UserDAO:
-    def __init__(self, manager: Postgres):
-        self.manager = manager
-
+class UserDAO(DAOInterface):
     def search_by_username(self, username: str) -> User:
         query = "SELECT * FROM users u WHERE u.name = %s"
         self.manager.execute_sql_command(query, (username,))
