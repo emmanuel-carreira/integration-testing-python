@@ -17,7 +17,7 @@ class UserDAOTest(unittest.TestCase):
 
         cls.postgres.execute_sql_command("""
             CREATE TABLE IF NOT EXISTS users
-            (ID       INT          PRIMARY KEY NOT NULL,
+            (USER_ID  INT          PRIMARY KEY NOT NULL,
              NAME     VARCHAR(100)             NOT NULL,
              EMAIL    VARCHAR(100),
              PASSWORD VARCHAR(64),
