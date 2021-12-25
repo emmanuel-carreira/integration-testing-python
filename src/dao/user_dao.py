@@ -12,5 +12,6 @@ class UserDAO:
         fetched_user = self.manager.cursor.fetchone()
         return User(*fetched_user) if fetched_user else None
 
-    def delete_user(self, user: User):
-        pass
+    def delete_user(self, user: User) -> None:
+        query = "DELETE FROM users u WHERE u.user_id = %s"
+        self.manager.execute_sql_command(query, (user.user_id,))

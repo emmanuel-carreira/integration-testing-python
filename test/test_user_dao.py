@@ -49,3 +49,18 @@ class UserDAOTest(unittest.TestCase):
         self.assertIsInstance(user, User)
         self.assertEqual(user.user_id, 1)
         self.assertEqual(user.name, "Jack")
+
+    def test_user_deletion(self):
+        self.postgres.execute_sql_command(
+            "INSERT INTO users (USER_ID, NAME) VALUES (%s, %s)",
+            (1, "Jack")
+        )
+        self.postgres.commit_command()
+
+        user = self.user_dao.search_by_username("Jack")
+        self.assertIsNotNone(user)
+
+        self.user_dao.delete_user(user)
+
+        user = self.user_dao.search_by_username("Jack")
+        self.assertIsNone(user)
