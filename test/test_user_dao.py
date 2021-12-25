@@ -27,7 +27,7 @@ class UserDAOTest(unittest.TestCase):
 
         cls.user_dao = UserDAO(cls.postgres)
 
-    def tearDown(self):
+    def setUp(self):
         self.postgres.execute_sql_command("DELETE FROM users;")
         self.postgres.commit_command()
 
