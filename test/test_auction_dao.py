@@ -40,3 +40,15 @@ class UserDAOTest(unittest.TestCase):
 
         registered_auction = self.auction_dao.search_by_id(auction.auction_id)
         self.assertIsNotNone(registered_auction)
+
+    def test_auction_update(self):
+        auction = Auction(1, "Knapsack", 10.0, datetime.utcnow(), 1, [])
+        self.auction_dao.register(auction)
+        auction.name = "Smartphone"
+        auction.initial_value = 1000.0
+
+        self.auction_dao.register(auction)
+
+        registered_auction = self.auction_dao.search_by_id(auction.auction_id)
+        self.assertEqual(registered_auction.name, "Smartphone")
+        self.assertEqual(registered_auction.initial_value, 1000.0)
