@@ -2,6 +2,7 @@ import os
 import unittest
 
 from src.dao.user_dao import UserDAO
+from src.models.user import User
 from src.postgres import Postgres
 
 class UserDAOTest(unittest.TestCase):
@@ -45,4 +46,6 @@ class UserDAOTest(unittest.TestCase):
 
         user = self.user_dao.search_by_username("Jack")
 
-        self.assertEqual(user, ('(1,Jack,,,,)',))
+        self.assertIsInstance(user, User)
+        self.assertEqual(user.user_id, 1)
+        self.assertEqual(user.name, "Jack")
