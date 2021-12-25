@@ -32,17 +32,20 @@ class UserDAOTest(unittest.TestCase):
         self.postgres.execute_sql_command("DELETE FROM users;")
         self.postgres.commit_command()
 
+    def _create_user_in_database(self):
+        self.postgres.execute_sql_command(
+            "INSERT INTO users (USER_ID, NAME) VALUES (%s, %s)",
+            (1, "Jack")
+        )
+        self.postgres.commit_command()
+
     def test_search_by_username_when_user_with_given_username_does_not_exist(self):
         user = self.user_dao.search_by_username("John")
 
         self.assertEqual(user, None)
 
     def test_search_by_username_when_user_with_given_username_exists(self):
-        self.postgres.execute_sql_command(
-            "INSERT INTO users (USER_ID, NAME) VALUES (%s, %s)",
-            (1, "Jack")
-        )
-        self.postgres.commit_command()
+        self._create_user_in_database()
 
         user = self.user_dao.search_by_username("Jack")
 
@@ -51,11 +54,7 @@ class UserDAOTest(unittest.TestCase):
         self.assertEqual(user.name, "Jack")
 
     def test_user_deletion(self):
-        self.postgres.execute_sql_command(
-            "INSERT INTO users (USER_ID, NAME) VALUES (%s, %s)",
-            (1, "Jack")
-        )
-        self.postgres.commit_command()
+        self._create_user_in_database()
 
         user = self.user_dao.search_by_username("Jack")
         self.assertIsNotNone(user)
