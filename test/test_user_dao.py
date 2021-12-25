@@ -39,7 +39,7 @@ class UserDAOTest(unittest.TestCase):
 
     def test_search_by_username_when_user_with_given_username_exists(self):
         self.postgres.execute_sql_command(
-            "INSERT INTO users (ID, NAME) VALUES (%s, %s)",
+            "INSERT INTO users (USER_ID, NAME) VALUES (%s, %s)",
             (1, "Jack")
         )
         self.postgres.commit_command()
